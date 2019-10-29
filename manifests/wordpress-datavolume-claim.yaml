@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wp-nfs-pv
+spec:
+  capacity:
+    storage: 1G
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    # FIXME: use the right IP
+    # server: nfs-server.default.svc.cluster.local # It doesn't work, bug: https://github.com/kubernetes/minikube/issues/3417
+    # The IP Address is "kubectl get pods" NOT "kubectl get service".
+    server: 10.244.0.4
+    path: "/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1G
